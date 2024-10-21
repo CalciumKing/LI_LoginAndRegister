@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.li_loginandregister.MainController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: midnightblue;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.li_loginandregister.MainController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="257.0" layoutX="200.0" layoutY="94.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Label fx:id="formText" alignment="CENTER" contentDisplay="CENTER" layoutX="257.0" layoutY="109.0" prefHeight="17.0" prefWidth="86.0" text="Login Form" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="login" layoutX="248.0" layoutY="140.0" mnemonicParsing="false" onAction="#ChangeForm" style="-fx-background-radius: 8px 0 0 8px;" styleClass="active" text="Login" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="signup" layoutX="296.0" layoutY="140.0" mnemonicParsing="false" onAction="#ChangeForm" style="-fx-background-radius: 0 8px 8px 0;" styleClass="notActive" text="Signup">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <TextField fx:id="email" layoutX="225.0" layoutY="209.0" promptText="Email Address:" style="-fx-background-radius: 8px;" />
+      <TextField fx:id="password" layoutX="225.0" layoutY="247.0" promptText="Password:" style="-fx-background-radius: 8px;" />
+      <TextField fx:id="confirmPassword" layoutX="225.0" layoutY="281.0" promptText="Confirm Password:" style="-fx-background-radius: 8px;" visible="false" />
+      <Button fx:id="formButton" layoutX="225.0" layoutY="315.0" mnemonicParsing="false" onAction="#FormSubmit" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: midnightblue;" text="Login" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="username" layoutX="225.0" layoutY="174.0" promptText="Username:" style="-fx-background-radius: 8px;" />
+   </children>
+</AnchorPane>
