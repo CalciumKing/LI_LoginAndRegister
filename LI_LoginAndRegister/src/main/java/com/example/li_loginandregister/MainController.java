@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainController {
     // region Variables
     @FXML
@@ -46,6 +49,15 @@ public class MainController {
     private void FormSubmit() {
         if (ValidForm()) {
             System.out.println("valid form");
+            try {
+                if (signup.getStyleClass().contains("active")) {
+                    SQLUtils.Register(username.getText(), password.getText(), email.getText());
+                } else if (login.getStyleClass().contains("active")) {
+                    String name = SQLUtils.Login(username.getText(), password.getText(), email.getText());
+                }
+            } catch (Exception ignored) {
+                ErrorAlert(Alert.AlertType.ERROR, "SQL Error", "Error Retrieving SQL Information from MainController", "There was an error retrieving the SQL information, or that user doesn't exist.");
+            }
         }
     }
 
@@ -57,36 +69,56 @@ public class MainController {
     }
 
     private boolean ValidForm() {
-        if (username.getText().isEmpty() || email.getText().isEmpty() || password.getText().isEmpty() || confirmPassword.getText().isEmpty()) {
-            ErrorAlert("Form Validation", "Invalid Email", "All Fields Must Be Filled In");
-            return false;
-        }
-        //email@email.com
-        else if (!email.getText().contains("@") || !email.getText().contains(".com")) {
-            ErrorAlert("Form Validation", "Invalid Email", "Please Enter A Valid Email That Contains An '@' And A '.com'");
-            return false;
-        }
+        // region Regex Characters
+        // . any single character
+        // * 0 or more occurrences of the preceding element
+        // + 1 or more occurrence of the preceding element
+        // [] match any character inside brackets
+        // ^ start of a string
+        // $ end of a string
+        // \ escape character
+        // ?=* positive look ahead assertion
+        // ?! negative look ahead assertion
+        // .{8, } at least 8 characters
+        // \\d shortcut for 0-9
+        //endregion
+
         // Pattern.compile("[0-9][A-Z][a-z]").matcher(password.getText()).find()
-        else if (password.getText().matches("^[a-zA-Z0-9+_.]+$") || password.getText().length() < 8) {
-            ErrorAlert("Form Validation", "Invalid Password", "Please Enter A Valid Password That Contains At Least 8 Characters, 1 Uppercase, 1 Lowercase, 1 Number, and 1 Special Character");
+        // || password.getText().matches(emailRegex)
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._]+\\.[a-zA-Z]{2,6}$";
+//        String passwordRegex = "^[a-zA-Z0-9+_.]+$";
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[/~`!@#$%^&*()_+{};:',<.>? =]).{8,}$";
+
+        // || password.getText().length() < 8
+        if (Pattern.compile(passwordRegex).matcher(password.getText()).matches()) {
+            ErrorAlert(Alert.AlertType.INFORMATION, "Form Validation", "Invalid Password", "Please Enter A Valid Password That Contains At Least 8 Characters, 1 Uppercase, 1 Lowercase, 1 Number, and 1 Special Character");
             return false;
-        } else if (signup.getStyleClass().contains("active") && !password.getText().equals(confirmPassword.getText())) {
-            ErrorAlert("Form Validation", "Passwords Must Match", "Password And Confirm Password Must Match");
-            return false;
-        } else return true;
+        }
+
+//        if (username.getText().isEmpty() || email.getText().isEmpty() || password.getText().isEmpty() || (signup.getStyleClass().contains("active") && confirmPassword.getText().isEmpty())) {
+//            ErrorAlert(Alert.AlertType.INFORMATION, "Form Validation", "Invalid Fields", "All Fields Must Be Filled In");
+//            return false;
+//        } else if (!Pattern.compile(emailRegex).matcher(email.getText()).matches()) {
+//            ErrorAlert(Alert.AlertType.INFORMATION, "Form Validation", "Invalid Email", "Please Enter A Valid Email That Contains An '@' And A '.com'");
+//            return false;
+//        } else else if (signup.getStyleClass().contains("active") && !password.getText().equals(confirmPassword.getText())) {
+//            ErrorAlert(Alert.AlertType.INFORMATION, "Form Validation", "Passwords Must Match", "Password And Confirm Password Must Match");
+//            return false;
+//        }
+        return true;
     }
 
     // endregion
-    // region Utilities
-    private void ErrorAlert(String title, String headerText, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    // region Utils
+    public static void ErrorAlert(Alert.AlertType type, String title, String headerText, String contentText) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         alert.showAndWait();
     }
-    // endregion
 
+    // endregion
     // region Window Settings
     @FXML
     private void Minimize(ActionEvent event) {

@@ -33,5 +33,15 @@
          </font>
       </Button>
       <TextField fx:id="username" layoutX="225.0" layoutY="174.0" promptText="Username:" style="-fx-background-radius: 8px;" />
+      <Button layoutX="574.0" layoutY="1.0" mnemonicParsing="false" onAction="#Close" style="-fx-background-color: WHITESMOKE;" text="X" textFill="#0d00c5">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="550.0" layoutY="1.0" mnemonicParsing="false" onAction="#Minimize" style="-fx-background-color: WHITESMOKE;" text="-" textFill="#0d00c5">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
