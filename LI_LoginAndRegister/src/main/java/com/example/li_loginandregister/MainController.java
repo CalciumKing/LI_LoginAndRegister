@@ -49,8 +49,6 @@ public class MainController {
             password.setPromptText("Password:");
             forgotPassword.setVisible(true);
         }
-        System.out.println(shortLogin);
-        System.out.println(shortSignUp);
         ClearForm();
     }
 
